@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:clima_master/screens/location_screen.dart';
 import 'package:clima_master/services/location.dart';
 import 'package:clima_master/services/networking.dart';
@@ -19,11 +20,13 @@ class _LoadingScreenState extends State<LoadingScreen> {
     print(location.Longitude);
 
     NetworkHelper networkHelper =
-        NetworkHelper(location.Latitude, location.Longitude, apiKey);
+        NetworkHelper(location.Latitude, location.Longitude, apiKey, 'metric');
 
     var weatherData = await networkHelper.getData();
     Navigator.push(context, MaterialPageRoute(builder: (context) {
-      return LocationScreen();
+      return LocationScreen(
+        locationWeather: weatherData,
+      );
     }));
   }
 
@@ -36,6 +39,12 @@ class _LoadingScreenState extends State<LoadingScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold();
+    return Scaffold(
+      body: Center(
+          child: SpinKitDualRing(
+        color: Colors.white,
+        size: 100.0,
+      )),
+    );
   }
 }
